@@ -76,7 +76,7 @@ task('deployer', [
     // and changes the owner and permissions of each file or directory
     'deploy:writable',
     // Yarn install and build assets
-    'build-assets',
+    // 'build-assets',
     // if Composer is used on the site, the Composer install command is executed
     'deploy:vendors',
     // loops around release and removes unwanted directories and files
