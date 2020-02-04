@@ -41,8 +41,6 @@ add('writable_dirs', [
 host('3.14.12.188')
     ->user('linhdn1198')
     ->stage('development')
-    ->set('http_user', 'www-data')
-    ->set('writable_mode', 'chmod')
     ->set('deploy_path', '~/{{application}}')
     ->forwardAgent(false);
 
@@ -92,11 +90,11 @@ task('deployer', [
 ]);
 
 // [Optional] if deploy fails automatically unlock.
-after('deploy:failed', 'deploy:unlock');
+after('deploy:failed', 'deploy:unlock development');
 
 // Migrate database before symlink new release.
 
-before('deploy:symlink', 'artisan:migrate');
+// before('deploy:symlink', 'artisan:migrate');
 
 task('reload:php-fpm', function () {
     $stage = input()->hasArgument('stage') ? input()->getArgument('stage') : null;
@@ -107,7 +105,7 @@ task('reload:php-fpm', function () {
             break;
 
         default:
-            run('sudo /etc/init.d/php7.3-fpm reload');
+            run('sudo systemctl reload php-fpm');
     }
 })->desc('PHP7 FPM reloaded');
 
