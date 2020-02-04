@@ -67,7 +67,7 @@ task('deployer', [
     'deploy:release',
     // clones the project Git repository
     'deploy:update_code',
-    // loops around t he list of shared directories defined in the config file
+    // loops around the list of shared directories defined in the config file
     // and generates symlinks for each
     'deploy:shared',
     // loops around the list of writable directories defined in the config file
@@ -94,7 +94,7 @@ after('deploy:failed', 'deploy:unlock development');
 
 // Migrate database before symlink new release.
 
-// before('deploy:symlink', 'artisan:migrate');
+before('deploy:symlink', 'artisan:migrate');
 
 task('reload:php-fpm', function () {
     $stage = input()->hasArgument('stage') ? input()->getArgument('stage') : null;
