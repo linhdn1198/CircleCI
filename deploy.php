@@ -54,8 +54,8 @@ task('build', function () {
 });
 
 task('build-assets', function () {
-    run('cd {{release_path}} && yarn');
-    run('cd {{release_path}} && yarn run dev');
+    run('cd {{release_path}} && npm');
+    run('cd {{release_path}} && npm run dev');
 });
 
 task('deployer', [
