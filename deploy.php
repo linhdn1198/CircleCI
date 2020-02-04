@@ -101,11 +101,11 @@ task('reload:php-fpm', function () {
 
     switch ($stage) {
         case 'staging':
-            run('sudo systemctl restart nginx');
+            run('sudo /etc/init.d/php7.3-fpm reload');
             break;
 
         default:
-            run('sudo systemctl restart nginx');
+            run('sudo /etc/init.d/php7.3-fpm reload');
     }
 })->desc('PHP7 FPM reloaded');
 
