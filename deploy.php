@@ -52,7 +52,7 @@ task('build', function () {
 });
 
 task('build-assets', function () {
-    run('cd {{release_path}} && npm');
+    run('cd {{release_path}} && npm install');
     run('cd {{release_path}} && npm run dev');
 });
 
