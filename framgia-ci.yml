@@ -1,0 +1,6 @@
+project_type: php
+test:
+  phpcs:
+    command: phpcs --standard=Framgia app
+  eslint:
+    command: yarn run eslint
