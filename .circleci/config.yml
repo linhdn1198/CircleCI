@@ -35,12 +35,12 @@ jobs:
             if [[ true ]];  then
               curl -X POST -H "X-ChatWorkToken: $CHATWORK_TOKEN" -d \
                 "body=
-                TO ALL >>>[info][title]$CIRCLE_PROJECT_REPONAME: Success![/title]- Repository name: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
-              - Author: $CIRCLE_USERNAME
-              - Branch: $CIRCLE_BRANCH
-              - Commit/pull request link: https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commit/$CIRCLE_SHA1
-              - Build link: https://circleci.com/gh/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM
-              - Pull request: $CI_PULL_REQUEST
+                TO ALL >>>[info][title]$CIRCLE_PROJECT_REPONAME: Success![/title]
+                Repository name: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+                Author: $CIRCLE_USERNAME
+                Branch: $CIRCLE_BRANCH
+                Commit/pull request link: https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commit/$CIRCLE_SHA1
+                Build link: https://circleci.com/gh/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM
                 [/info]
                 " \
                 "https://api.chatwork.com/v2/rooms/$CHATWORK_ROOM/messages"
@@ -53,12 +53,12 @@ jobs:
             if [[ true ]];  then
               curl -X POST -H "X-ChatWorkToken: $CHATWORK_TOKEN" -d \
                 "body=
-                TO ALL >>>[info][title]$CIRCLE_PROJECT_REPONAME: Fail![/title]- Repository name: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
-              - Author: $CIRCLE_USERNAME
-              - Branch: $CIRCLE_BRANCH
-              - Commit/pull request link: https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commit/$CIRCLE_SHA1
-              - Build link: https://circleci.com/gh/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM
-              - Pull request: $CI_PULL_REQUEST
+                TO ALL >>>[info][title]$CIRCLE_PROJECT_REPONAME: Fail![/title]
+                Repository name: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+                Author: $CIRCLE_USERNAME
+                Branch: $CIRCLE_BRANCH
+                Commit/pull request link: https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commit/$CIRCLE_SHA1
+                Build link: https://circleci.com/gh/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM
                 [/info]
                 " \
                 "https://api.chatwork.com/v2/rooms/$CHATWORK_ROOM/messages"
@@ -77,7 +77,7 @@ jobs:
             if [ -z `ssh-keygen -F '3.14.12.188'` ]; then
               ssh-keyscan -H '3.14.12.188' >> ~/.ssh/known_hosts
             fi
-            dep deploy -vv
+            dep deployer development -vv
 workflows:
   version: 2
   build-and-deploy:
