@@ -7,13 +7,13 @@ require 'recipe/laravel.php';
 set('application', 'demo');
 
 // Project repository
-set('repository', 'git@github.com:linhdn-0941/demo.git');
+set('repository', 'https://github.com/linhdn1198/CircleCI.git');
 
 // [Optional] Allocate tty for git clone. Default value is false.
-set('git_tty', false); 
+set('git_tty', false);
 
 
-// Shared files/dirs between deploys 
+// Shared files/dirs between deploys
 add('shared_files', [
     '.env',
 ]);
@@ -22,7 +22,7 @@ add('shared_dirs', [
     'bootstrap/cache',
 ]);
 
-// Writable dirs by web server 
+// Writable dirs by web server
 add('writable_dirs', [
     'bootstrap/cache',
     'storage',
@@ -44,7 +44,7 @@ host('3.14.12.188')
     ->set('deploy_path', '~/{{application}}')
     ->forwardAgent(false);
 
-    
+
 // Tasks
 
 task('build', function () {
@@ -97,16 +97,7 @@ after('deploy:failed', 'deploy:unlock development');
 before('deploy:symlink', 'artisan:migrate');
 
 task('reload:php-fpm', function () {
-    $stage = input()->hasArgument('stage') ? input()->getArgument('stage') : null;
-
-    switch ($stage) {
-        case 'staging':
-            run('sudo /etc/init.d/php7.3-fpm reload');
-            break;
-
-        default:
-            run('sudo /etc/init.d/php7.3-fpm reload');
-    }
+    run('sudo /etc/init.d/php7.3-fpm reload');
 })->desc('PHP7 FPM reloaded');
 
 after('cleanup', 'reload:php-fpm');

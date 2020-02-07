@@ -27,3 +27,65 @@ jobs:
       - run: framgia-ci run --local
       - run: framgia-ci test-connect 127.0.0.1 3306 60
       - run: php artisan migrate
+      # Send notification to chatwork
+      - run:
+          name: Sending notification build success
+          when: on_success
+          command: |
+            if [[ true ]];  then
+              curl -X POST -H "X-ChatWorkToken: $CHATWORK_TOKEN" -d \
+                "body=
+                TO ALL >>>[info][title]$CIRCLE_PROJECT_REPONAME: Success![/title]- Repository name: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+              - Author: $CIRCLE_USERNAME
+              - Branch: $CIRCLE_BRANCH
+              - Commit/pull request link: https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commit/$CIRCLE_SHA1
+              - Build link: https://circleci.com/gh/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM
+              - Pull request: $CI_PULL_REQUEST
+                [/info]
+                " \
+                "https://api.chatwork.com/v2/rooms/$CHATWORK_ROOM/messages"
+            fi
+      # Send notification to chatwork
+      - run:
+          name: Sending notification build fail
+          when: on_fail
+          command: |
+            if [[ true ]];  then
+              curl -X POST -H "X-ChatWorkToken: $CHATWORK_TOKEN" -d \
+                "body=
+                TO ALL >>>[info][title]$CIRCLE_PROJECT_REPONAME: Fail![/title]- Repository name: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+              - Author: $CIRCLE_USERNAME
+              - Branch: $CIRCLE_BRANCH
+              - Commit/pull request link: https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commit/$CIRCLE_SHA1
+              - Build link: https://circleci.com/gh/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM
+              - Pull request: $CI_PULL_REQUEST
+                [/info]
+                " \
+                "https://api.chatwork.com/v2/rooms/$CHATWORK_ROOM/messages"
+            fi
+  deploy:
+    docker:
+      - image: framgiaciteam/deb-deploy:7.3
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "56:16:3d:4d:44:1a:0e:99:d0:95:62:0b:d5:f9:42:18"
+      - checkout
+      - run:
+          name: Deploy
+          command: |
+            if [ -z `ssh-keygen -F '3.14.12.188'` ]; then
+              ssh-keyscan -H '3.14.12.188' >> ~/.ssh/known_hosts
+            fi
+            dep deploy -vv
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
