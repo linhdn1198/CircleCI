@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Welcome auto deploy with Laravel
+                    Welcome auto deploy with CircleCI
                 </div>
 
                 <div class="links">
