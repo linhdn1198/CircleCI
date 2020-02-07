@@ -16,7 +16,7 @@ jobs:
       # composer cache
       - restore_cache:
           keys:
-            - vendor-v1-{{ checksum "composer.lock" }}ắt
+            - vendor-v1-{{ checksum "composer.lock" }}
       - run:  composer install
       - save_cache:
           key: vendor-v1-{{ checksum "composer.lock" }}
